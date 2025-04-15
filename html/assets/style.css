@@ -1,0 +1,37 @@
+body,
+body * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 1340px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 2rem 0 1.75rem;
+}
+
+ul {
+  display: inline-flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+
+  & li {
+    list-style: none;
+
+    & label {
+      display: inline-flex;
+      align-items: baseline;
+      column-gap: 0.75rem;
+    }
+  }
+}

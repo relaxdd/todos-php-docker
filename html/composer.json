@@ -1,0 +1,22 @@
+{
+  "name": "awenn2015/learn-docker-nginx",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Awenn2015\\LearnDockerNginx\\": "includes/class",
+      "Awenn2015\\LearnDockerNginx\\Defines\\": "includes/defines"
+    },
+    "files": [
+        "includes/functions.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "relaxdd",
+      "email": "awenn2015@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {}
+}

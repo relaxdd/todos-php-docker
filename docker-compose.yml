@@ -1,0 +1,36 @@
+version: '3.8'
+name: learn-docker-nginx
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - app_data:/var/www/html
+      - ./html:/var/www/html
+      - ./logs/nginx:/var/log/nginx
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - ./conf/nginx/includes:/etc/nginx/includes
+    depends_on:
+      - php
+    networks:
+      - app_network
+
+  php:
+    image: php:8.3-apache
+    volumes:
+      - app_data:/var/www/html
+      - ./html:/var/www/html
+      - ./logs/apache2:/var/log/apache2
+      - ./conf/apache2/ports.conf:/etc/apache2/ports.conf
+      - ./conf/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    networks:
+      - app_network
+
+volumes:
+  app_data:
+
+networks:
+  app_network:
+    driver: bridge
