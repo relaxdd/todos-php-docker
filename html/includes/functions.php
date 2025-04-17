@@ -43,9 +43,6 @@ function transform_formdata_to_array(array $post): array {
 function handle_post_request(JSON_DB $json_db): void {
   if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-  // var_print($_POST);
-  // die();
-
   $data = transform_formdata_to_array($_POST);
   $assoc = [];
 
@@ -63,6 +60,46 @@ function handle_post_request(JSON_DB $json_db): void {
 
   $json_db->update('todos', $prev_db);
 
-  header('Location: /');
+  header('Location: /todos');
   die();
+}
+
+/**
+ * @param array $args
+ * @return void
+ */
+function require_head_template(array $args): void {
+  $args = array_merge([
+    'title' => '',
+    'stylesheet' => []
+  ], $args);
+
+  $title = $args['title'];
+  $stylesheet = $args['stylesheet'];
+
+  $stylesheet_str = implode('', array_map(function (string $link) {
+    return '<link rel="stylesheet" href="' . $link . '" />';
+  }, $stylesheet));
+
+  ob_start();
+
+  require ABS_PATH . '/templates/head.php';
+  echo str_replace(['%title%', '%stylesheet%'], [$title, $stylesheet_str], ob_get_clean());
+}
+
+function require_template(string $name) {
+  require ABS_PATH . '/templates/' . $name . '.php';
+}
+
+function mapped_implode($glue, $array, $symbol = '=') {
+  return implode(
+    $glue,
+    array_map(
+      function ($k, $v) use ($symbol) {
+        return $k . $symbol . $v;
+      },
+      array_keys($array),
+      array_values($array)
+    )
+  );
 }

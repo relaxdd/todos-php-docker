@@ -5,10 +5,11 @@
   "autoload": {
     "psr-4": {
       "Awenn2015\\LearnDockerNginx\\": "includes/class",
-      "Awenn2015\\LearnDockerNginx\\Defines\\": "includes/defines"
+      "Awenn2015\\LearnDockerNginx\\Defines\\": "includes/defines",
+      "Awenn2015\\LearnDockerNginx\\Libs\\Fetch\\": "includes/libs/fetch"
     },
     "files": [
-        "includes/functions.php"
+      "includes/functions.php"
     ]
   },
   "authors": [

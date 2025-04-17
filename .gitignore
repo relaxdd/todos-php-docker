@@ -2,3 +2,4 @@
 /html/composer.phar
 /html/vendor/
 /**/node_modules/
+/html/static/db.json

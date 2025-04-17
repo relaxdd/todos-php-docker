@@ -1,0 +1,24 @@
+{
+  "name": "@todos-php-docker/nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "awenn2015",
+  "type": "module",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "pm2-runtime server.js",
+    "no-dl": "npm install --package-lock-only --no-package-lock",
+    "no-udl": "npm uninstall --package-lock-only --no-package-lock"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "zod": "^3.24.3"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  }
+}

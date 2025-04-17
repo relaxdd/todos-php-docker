@@ -4,12 +4,13 @@ name: learn-docker-nginx
 services:
   nginx:
     image: nginx:latest
+    container_name: app_nginx
     ports:
       - '80:80'
     volumes:
       - app_data:/var/www/html
       - ./html:/var/www/html
-      - ./logs/nginx:/var/log/nginx
+      # - ./logs/nginx:/var/log/nginx
       - ./conf/nginx/conf.d:/etc/nginx/conf.d
       - ./conf/nginx/includes:/etc/nginx/includes
     depends_on:
@@ -19,17 +20,47 @@ services:
 
   php:
     image: php:8.3-apache
+    container_name: app_apache
     volumes:
+      # - php_composer:/var/www/html/vendor
       - app_data:/var/www/html
       - ./html:/var/www/html
-      - ./logs/apache2:/var/log/apache2
+      # - ./logs/apache2:/var/log/apache2
       - ./conf/apache2/ports.conf:/etc/apache2/ports.conf
       - ./conf/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    links:
+      - nodejs
+    networks:
+      - app_network
+    depends_on:
+      - nodejs
+    command: >
+      bash -c "cd /var/www/html 
+      && php composer.phar dump-autoload 
+      && cd ../../../ 
+      && a2enmod rewrite && apache2-foreground"
+
+  nodejs:
+    build: ./nodejs
+    image: learn-docker-nginx--nodejs
+    container_name: app_nodejs
+    volumes:
+      - node_modules:/app/node_modules
+      - nodejs_data:/app/src
+      - ./nodejs/src:/app/src
+      - ./nodejs/package.json:/app/package.json
+      - ./nodejs/package-lock.json:/app/package-lock.json
+    environment:
+      NODE_ENV: production
+      PORT: 3000
     networks:
       - app_network
 
 volumes:
   app_data:
+  nodejs_data:
+  node_modules:
+  # php_composer:
 
 networks:
   app_network:

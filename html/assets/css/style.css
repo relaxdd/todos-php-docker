@@ -1,0 +1,72 @@
+@import url('/assets/css/modules/grid.css');
+
+body,
+body * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #111617;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  padding: 2.25rem 0;
+}
+
+h1 {
+  margin: 0 0 2rem;
+}
+
+ul {
+  display: inline-flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+
+  & li {
+    list-style: none;
+
+    & label {
+      display: inline-flex;
+      align-items: baseline;
+      column-gap: 0.75rem;
+    }
+  }
+}
+
+.header {
+  border-bottom: 1px solid #e1e9ef;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-brand {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.header-nav__link {
+  padding: 0 calc(var(--column-gap) / 2);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:not(:last-child)::after {
+    content: '|';
+    margin-left: 0.5rem;
+  }
+}

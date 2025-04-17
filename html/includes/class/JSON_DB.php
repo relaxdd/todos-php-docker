@@ -3,7 +3,10 @@
 namespace Awenn2015\LearnDockerNginx;
 
 class JSON_DB {
-  public string $filepath;
+  private bool $loaded = false;
+
+  private string $filepath;
+  private ?array $filedata = null;
 
   /**
    * Undocumented function
@@ -21,35 +24,24 @@ class JSON_DB {
    */
   public function read(): ?array {
     try {
-      if (!file_exists($this->filepath)) return null;
-      $json = file_get_contents($this->filepath);
-      return json_decode($json, true);
+      if ($this->loaded)
+        return $this->filedata;
+      else {
+        if (!file_exists($this->filepath)) return null;
+
+        $json = file_get_contents($this->filepath);
+
+        $this->filedata = json_decode($json, true);
+        $this->loaded = true;
+
+        return $this->filedata;
+      }
     } catch (\Throwable $e) {
       return null;
     }
   }
 
-  /**
-   * Undocumented function
-   *
-   * @param string $content
-   * @return integer|false
-   */
-  public function write(string $content): int|false {
-    try {
-      return file_put_contents($this->filepath, $content);
-    } catch (\Throwable $e) {
-      return false;
-    }
-  }
-
-  public function update(string $property, mixed $data) {
-    $prev_db = $this->read();
-    $prev_db[$property] = $data;
-
-    $this->write(json_encode($prev_db));
-  }
-
+  
   /**
    * TODO: Реализовать Array Property Resolve через 'todos.0.completed`
    *
@@ -64,5 +56,25 @@ class JSON_DB {
     } catch (\Throwable $e) {
       return [];
     }
+  }
+
+  /**
+   * @param array $content
+   * @return integer|false
+   */
+  public function write(array $content): int|false {
+    try {
+      $this->filedata = $content;
+      return file_put_contents($this->filepath, json_encode($content));
+    } catch (\Throwable $e) {
+      return false;
+    }
+  }
+
+  public function update(string $property, mixed $data) {
+    $prev_db = $this->read();
+    $prev_db[$property] = $data;
+
+    $this->write($prev_db);
   }
 }
