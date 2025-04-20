@@ -1,9 +1,15 @@
 <?php
 
-use Awenn2015\LearnDockerNginx\JSON_DB;
+use Awenn2015\LearnDockerNginx\Libs\Fetch\FetchRequest;
 
-$json_db = new JSON_DB('/static/db.json');
-$posts = $json_db->load('posts');
+$posts = (function (): array {
+  try {
+    $resp = FetchRequest::init('/api/v1/posts')->request();
+    return $resp->data !== false ? json_decode($resp->data, true) : [];
+  } catch (Throwable $e) {
+    return [];
+  }
+})();
 
 usort($posts, function (array $a, array $b) {
   return strtotime($b['published']['iso']) - strtotime($a['published']['iso']);

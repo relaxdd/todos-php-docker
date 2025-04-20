@@ -1,10 +1,14 @@
 import ApiError from '../shared/error/api.error.js';
 
-function parseZodError(error) {
-  return error.errors.map((issue) => ({
-    issue: issue.path.join('.'),
-    message: `${issue.path.join('.')} is ${issue.message}`,
-  }));
+function parseZodError(error, source) {
+  return error.errors.map((issue) => {
+    const issues = issue.path.join('.');
+
+    return {
+      issue: issues || source,
+      message: `${issues || source} is ${issue.message}`,
+    };
+  });
 }
 
 function validateRequest(sources) {
@@ -17,7 +21,7 @@ function validateRequest(sources) {
         return next(
           new ApiError('Bad Request', 400, {
             source,
-            errors: parseZodError(result.error),
+            errors: parseZodError(result.error, source),
           })
         );
       }

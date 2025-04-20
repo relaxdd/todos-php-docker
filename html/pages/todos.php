@@ -33,31 +33,28 @@ $todos = (function (): array {
     <div class="container">
       <h1>All todos</h1>
 
-      <form action="/todos" method="post">
-        <?php if (count($todos)) : ?>
-          <ul>
-            <?php foreach ($todos as $i => $todo) : ?>
-              <li id="todo-<?= $todo['id'] ?>">
-                <label>
-                  <input type="hidden" name="todos_<?= $i ?>_id" value="<?= $todo['id'] ?>">
+      <?php if (count($todos)) : ?>
+        <ul class="todo-list">
+          <?php foreach ($todos as $i => $todo) : ?>
+            <li id="todo-<?= $todo['id'] ?>" class="todo-item">
+              <label>
+                <input
+                  type="checkbox"
+                  data-id=<?= $todo['id'] ?>
+                  <?= $todo['completed'] ? 'checked="" value="on"' : '' ?>>
 
-                  <input
-                    type="checkbox"
-                    name="todos_<?= $i ?>_completed"
-                    onchange="event.target.closest('form')?.submit()"
-                    <?= $todo['completed'] ? 'checked="" value="on"' : '' ?>>
-
-                  <span><?= $todo['title'] ?></span>
-                </label>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        <?php else : ?>
-          <span>No data for displaying :(</span>
-        <?php endif; ?>
-      </form>
+                <span><?= $todo['title'] ?></span>
+              </label>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      <?php else : ?>
+        <span>No data for displaying :(</span>
+      <?php endif; ?>
     </div>
   </main>
+
+  <script src="/assets/js/todos.js" type="text/javascript"></script>
 </body>
 
 </html>
